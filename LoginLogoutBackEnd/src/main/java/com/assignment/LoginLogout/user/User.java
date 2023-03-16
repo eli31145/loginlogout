@@ -14,7 +14,7 @@ import java.util.Objects;
 //@Entity allows class to be serialized and deserialized to and from JSON, allowing to create table in MySql DB
 @Entity
 //tells program to call the table "users"
-@Table(name = "users")
+@Table(name ="users")
 @Getter @Setter @NoArgsConstructor
 public class User {
     //@Id sets id variable as id field in database, @GeneratedValue tells prog to generate id value when new record
