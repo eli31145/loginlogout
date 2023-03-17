@@ -17,42 +17,42 @@ public class UserController {
     //@Valid requires valid json obj similar to User class to ensure obj received is usable in our prog
     @CrossOrigin
     @PostMapping("/users/register")
-    public Status registerUser(@Valid @RequestBody User newUser){
+    public String registerUser(@Valid @RequestBody User newUser){
         List<User> users = userRepository.findAll();
         if (users.contains(newUser)) {
             System.out.println("User already exists!");
-            return Status.USER_ALREADY_EXISTS;
+            return "User already exists!";
         }
         userRepository.save(newUser);
-        return Status.SUCCESS;
+        return "SUCCESS";
     }
     @CrossOrigin
     @PostMapping("/users/login")
-    public Status loginUser(@Valid @RequestBody User user){
+    public String loginUser(@Valid @RequestBody User user){
         List<User> users = userRepository.findAll();
         for (User u : users) {
             if (u.equals(user)) {
                 user.setLoggedIn(true);
                 userRepository.save(user);
-                return Status.SUCCESS;
+                return user.getUsername();
             }
         }
-        return Status.FAILURE;
+        return "FAILURE";
     }
     @CrossOrigin
     @PostMapping("/users/logout")
-    public Status logoutUser(@Valid @RequestBody User user) {
+    public String logoutUser(@Valid @RequestBody String username) {
         List<User> users = userRepository.findAll();
 
         for (User u : users) {
-            if (u.equals(user)) {
-                user.setLoggedIn(false);
-                userRepository.save(user);
-                return Status.SUCCESS;
+            if (u.getUsername().equals(username)) {
+                u.setLoggedIn(false);
+                userRepository.save(u);
+                return "User logged out";
             }
         }
 
-        return Status.FAILURE;
+        return "FAILURE";
     }
     @CrossOrigin
     @DeleteMapping("/users/all")
