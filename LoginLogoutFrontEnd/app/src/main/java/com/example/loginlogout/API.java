@@ -9,13 +9,13 @@ import retrofit2.http.POST;
 //API Obj will be created by Retrofit
 public interface API {
 
-    @POST("register")
+    @POST("/users/register")
     Call<ResponseBody> createUser(@Body User user);
 
-    @POST("login")
+    @POST("/users/login")
     Call<ResponseBody> checkUser(@Body User user);
 
-    @POST("logout")
-    Call<ResponseBody> logoutUser(@Body User user);
+    @POST("/users/logout")
+    Call<ResponseBody> logoutUser(@Body String username);
 
 }

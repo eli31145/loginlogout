@@ -4,15 +4,17 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.gson.Gson
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.IOException
 
-
+const val KEY_USERNAME: String = "KEY_USERNAME"
 //Communicates with Spring Backend using retrofit client
 class LoginActivity : AppCompatActivity() {
 
@@ -28,9 +30,9 @@ class LoginActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.btnLogin).setOnClickListener { loginUser() }
 
-        /*findViewById<Button>(R.id.btnRegister).setOnClickListener{
+        findViewById<TextView>(R.id.tvRegisterLink).setOnClickListener{
             startActivity(Intent(this, RegisterActivity::class.java))
-        }*/
+        }
     }
 
     private fun loginUser(){
@@ -52,14 +54,14 @@ class LoginActivity : AppCompatActivity() {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 var s = ""
                 try {
-                    s = response.body().toString()
+                    s = response.body()!!.string()
                 } catch (ioE:IOException){
                     ioE.printStackTrace()
                 }
-
                 if (s.equals(userName)) {
                     Toast.makeText(this@LoginActivity, "User Logged in!", Toast.LENGTH_SHORT).show()
-                    startActivity(Intent(this@LoginActivity, DashboardActivity::class.java).putExtra("username", userName))
+                    startActivity(Intent(this@LoginActivity, DashboardActivity::class.java).putExtra(
+                        KEY_USERNAME, userName))
                 } else {
                     Toast.makeText(this@LoginActivity, "Invalid userid or password", Toast.LENGTH_SHORT).show()
                 }
